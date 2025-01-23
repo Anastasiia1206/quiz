@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Tasks</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        p {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        .task {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .column {
+            flex: 1;
+        }
+
+        .words p,
+        .definitions select {
+            margin: 10px 0;
+        }
+
+        .definitions select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .correct {
+            background-color: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+
+        .incorrect {
+            background-color: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #result {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Match the Words to Their Definitions</h1>
+        <div class="task">
+            <div class="column words">
+                <p><strong>1.</strong> Open up</p>
+                <p><strong>2.</strong> Cheer up</p>
+                <p><strong>3.</strong> Live for</p>
+                <p><strong>4.</strong> Look forward to</p>
+                <p><strong>5.</strong> Brighten up</p>
+            </div>
+            <div class="column definitions">
+                <select id="1">
+                    <option value="">Select...</option>
+                    <option value="B">make something or someone more cheerful</option>
+                    <option value="E">find great happiness in something</option>
+                    <option value="A">become or make someone happier</option>
+                    <option value="C">anticipate something positive</option>
+                    <option value="D">express feelings or emotions</option>
+                </select>
+                <select id="2">
+                    <option value="">Select...</option>
+                    <option value="C">anticipate something positive</option>
+                    <option value="A">become or make someone happier</option>
+                    <option value="D">express feelings or emotions</option>
+                    <option value="B">make something or someone more cheerful</option>
+                    <option value="E">find great happiness in something</option>
+                </select>
+                <select id="3">
+                    <option value="">Select...</option>
+                    <option value="A">become or make someone happier</option>
+                    <option value="D">express feelings or emotions</option>
+                    <option value="C">anticipate something positive</option>
+                    <option value="E">find great happiness in something</option>
+                    <option value="B">make something or someone more cheerful</option>
+                </select>
+                <select id="4">
+                    <option value="">Select...</option>
+                    <option value="E">find great happiness in something</option>
+                    <option value="B">make something or someone more cheerful</option>
+                    <option value="C">anticipate something positive</option>
+                    <option value="D">express feelings or emotions</option>
+                    <option value="A">become or make someone happier</option>
+                </select>
+                <select id="5">
+                    <option value="">Select...</option>
+                    <option value="D">express feelings or emotions</option>
+                    <option value="C">anticipate something positive</option>
+                    <option value="B">make something or someone more cheerful</option>
+                    <option value="A">become or make someone happier</option>
+                    <option value="E">find great happiness in something</option>
+                </select>
+            </div>
+        </div>
+        <div class="buttons">
+            <button onclick="checkMatchingAnswers()">Check</button>
+            <button onclick="showMatchingAnswers()">Answers</button>
+            <button onclick="resetMatchingTask()">Reset</button>
+        </div>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const matchingAnswers = {
+            1: "D", // Open up -> express feelings or emotions
+            2: "A", // Cheer up -> become or make someone happier
+            3: "E", // Live for -> find great happiness in something
+            4: "C", // Look forward to -> anticipate something positive
+            5: "B"  // Brighten up -> make something or someone more cheerful
+        };
+
+        function checkMatchingAnswers() {
+            let score = 0;
+            let total = Object.keys(matchingAnswers).length;
+
+            for (let key in matchingAnswers) {
+                const selectElement = document.getElementById(key);
+                const userAnswer = selectElement.value;
+
+                // Highlight correct and incorrect answers
+                if (userAnswer === matchingAnswers[key]) {
+                    selectElement.classList.add("correct");
+                    selectElement.classList.remove("incorrect");
+                    score++;
+                } else {
+                    selectElement.classList.add("incorrect");
+                    selectElement.classList.remove("correct");
+                }
+            }
+
+            const result = document.getElementById("result");
+            result.textContent = `You got ${score} out of ${total} correct.`;
+            result.style.color = score === total ? "green" : "red";
+        }
+
+        function showMatchingAnswers() {
+            for (let key in matchingAnswers) {
+                const selectElement = document.getElementById(key);
+                selectElement.value = matchingAnswers[key];
+                selectElement.classList.add("correct");
+                selectElement.classList.remove("incorrect");
+            }
+            const result = document.getElementById("result");
+            result.textContent = "Correct answers displayed.";
+            result.style.color = "blue";
+        }
+
+        function resetMatchingTask() {
+            for (let key in matchingAnswers) {
+                const selectElement = document.getElementById(key);
+                selectElement.value = "";
+                selectElement.classList.remove("correct");
+                selectElement.classList.remove("incorrect");
+            }
+            document.getElementById("result").textContent = "";
+        }
+    </script>
+</body>
+
+</html>
